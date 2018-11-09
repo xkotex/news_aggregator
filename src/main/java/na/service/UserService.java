@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import java.util.*;
 
 @Service
+@Transactional
 public class UserService {
 
     @Autowired
@@ -45,5 +46,9 @@ public class UserService {
         }
         user.setBlogs(blogs);
         return user;
+    }
+
+    public void save(User user) {
+        userRepository.save(user);
     }
 }
