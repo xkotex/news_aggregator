@@ -43,4 +43,6 @@
 
 	<jpa:repositories base-package="na.repository" />
 
+	<import resource="security.xml" />
+
 </beans>
