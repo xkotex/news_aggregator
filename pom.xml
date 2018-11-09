@@ -8,7 +8,7 @@
 
 	<!-- Shared version number properties -->
 	<properties>
-		<org.springframework.version>4.3.17.RELEASE</org.springframework.version>
+		<org.springframework.version>4.3.18.RELEASE</org.springframework.version>
 		<apache.tiles>3.0.3</apache.tiles>
 	</properties>
 
