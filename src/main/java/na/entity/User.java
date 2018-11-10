@@ -1,5 +1,6 @@
 package na.entity;
 
+import na.annotation.UniqueUsername;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
@@ -14,10 +15,12 @@ public class User {
     private Integer id;
 
     @Size(min = 3, message = "Name must be at least 3 characters!")
+    @Column(unique = true)
+    @UniqueUsername(message = "Such username already exists!")
     private String name;
 
     @Size(min = 1, message = "Invalid email address")
-    @Email
+    @Email(message = "Invalid email address!")
     private String email;
 
     @Size(min = 5, message = "Password must be at least 5 characters!")
