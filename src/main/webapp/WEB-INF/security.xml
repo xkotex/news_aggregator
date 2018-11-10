@@ -8,9 +8,12 @@
         http://www.springframework.org/schema/security/spring-security.xsd">
 
 
+    <global-method-security pre-post-annotations="enabled" />
+
     <http use-expressions="true">
         <intercept-url pattern="/users**" access="hasRole('ROLE_ADMIN')" />
         <intercept-url pattern="/users/**" access="hasRole('ROLE_ADMIN')" />
+        <intercept-url pattern="/account**" access="hasRole('ROLE_USER')" />
         <form-login login-page="/login.html"/>
         <logout logout-url="/logout" />
     </http>
@@ -25,7 +28,7 @@
                                                               join user_role on user.id = user_role.users_id
                                                               join role on user_role.roles_id = role.id
                                                               where user.name = ?"
-                               users-by-username-query="select name, password, 1 from user where name = ?" />
+                               users-by-username-query="select name, password, enabled from user where name = ?" />
 
         </authentication-provider>
     </authentication-manager>

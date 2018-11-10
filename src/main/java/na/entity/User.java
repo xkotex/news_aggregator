@@ -1,6 +1,9 @@
 package na.entity;
 
+import org.hibernate.validator.constraints.Email;
+
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.*;
 
 @Entity
@@ -10,17 +13,31 @@ public class User {
     @GeneratedValue
     private Integer id;
 
+    @Size(min = 3, message = "Name must be at least 3 characters!")
     private String name;
 
+    @Size(min = 1, message = "Invalid email address")
+    @Email
     private String email;
 
+    @Size(min = 5, message = "Password must be at least 5 characters!")
     private String password;
+
+    private boolean enabled;
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     @ManyToMany
     @JoinTable
     private List<Role> roles;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Blog> blogs;
 
     public List<Blog> getBlogs() {

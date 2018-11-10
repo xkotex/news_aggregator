@@ -2,13 +2,16 @@ package na.service;
 
 import na.entity.Blog;
 import na.entity.Item;
+import na.entity.Role;
 import na.entity.User;
 import na.repository.BlogRepository;
 import na.repository.ItemRepository;
+import na.repository.RoleRepository;
 import na.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,6 +23,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private BlogRepository blogRepository;
@@ -49,6 +55,23 @@ public class UserService {
     }
 
     public void save(User user) {
+        user.setEnabled(true);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        user.setPassword(encoder.encode(user.getPassword()));
+
+        List<Role> roles = new ArrayList<Role>();
+        roles.add(roleRepository.findByName("ROLE_USER"));
+        user.setRoles(roles);
+
         userRepository.save(user);
+    }
+
+    public User findOneWithBlogs(String name) {
+        User user = userRepository.findByName(name);
+        return  findOneWithBlogs(user.getId());
+    }
+
+    public void delete(int id) {
+        userRepository.delete(id);
     }
 }
