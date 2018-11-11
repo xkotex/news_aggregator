@@ -32,18 +32,18 @@ public class RssService {
         return getItems(new StreamSource(url));
     }
 
-    private List<Item> getItems(Source source) throws RssException{
+    private List<Item> getItems(Source source) throws RssException {
         ArrayList<Item> list = new ArrayList<Item>();
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             JAXBElement<TRss> jaxbElement = unmarshaller.unmarshal(source, TRss.class);
-            TRss rss =jaxbElement.getValue();
+            TRss rss = jaxbElement.getValue();
 
             List<TRssChannel> channels = rss.getChannel();
-            for(TRssChannel channel: channels){
+            for (TRssChannel channel : channels) {
                 List<TRssItem> items = channel.getItem();
-                for(TRssItem rssItem : items){
+                for (TRssItem rssItem : items) {
                     Item item = new Item();
                     item.setTitle(rssItem.getTitle());
                     item.setDescription(rssItem.getDescription());

@@ -26,22 +26,22 @@ public class UserController {
     private BlogService blogService;
 
     @ModelAttribute("blog")
-    public Blog constructBlog(){
+    public Blog constructBlog() {
         return new Blog();
     }
 
-
-
     @RequestMapping("/account")
-    public String account(Model model, Principal principal){
+    public String account(Model model, Principal principal) {
         String name = principal.getName();
         model.addAttribute("user", userService.findOneWithBlogs(name));
         return "account";
     }
 
     @RequestMapping(value = "/account", method = RequestMethod.POST)
-    public String doAddBlog(Model model, @Valid @ModelAttribute("blog") Blog blog, Principal principal, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+    public String doAddBlog(Model model,
+                            @Valid @ModelAttribute("blog") Blog blog, BindingResult result,
+                            Principal principal) {
+        if (result.hasErrors()) {
             return account(model, principal);
         }
         String name = principal.getName();
@@ -50,10 +50,9 @@ public class UserController {
     }
 
     @RequestMapping("/blog/remove/{id}")
-    public String removeBlog(@PathVariable int id){
+    public String removeBlog(@PathVariable int id) {
         Blog blog = blogService.findOne(id);
         blogService.delete(blog);
         return "redirect:/account.html";
     }
-
 }
